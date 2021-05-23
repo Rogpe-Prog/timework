@@ -12,6 +12,11 @@ const App = ({navigation}) => {
       >
         <Text style={styles.title}>Main</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AddTimer')}
+      >
+        <Text style={styles.title}>Add...</Text>
+      </TouchableOpacity>
     </View>
   )
 }

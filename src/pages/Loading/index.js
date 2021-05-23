@@ -43,7 +43,7 @@ const Main = ({ navigation }) => {
             >
                 <Image style={styles.image} source={Logo} />
             </Animated.View>
-        <Text style={styles.title} onPress={()=> navigation.navigate('Main')}>Cada segundo conta</Text>
+        <Text style={styles.title} onPress={()=> navigation.navigate('AddTimer')}>Cada segundo conta</Text>
     </SafeAreaView>
   );
 }
