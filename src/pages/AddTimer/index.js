@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, Switch, Alert } from 'react-native'
 
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Colors from '../../styles/Colors'
 import Logo from '../../assets/logo.png'
 
-const AddTimer = ({ navigation }) => {
+const AddTimer = ({ params, navigation }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+    const { minOne } = navigation.state.params
 
   return (
 
@@ -15,11 +17,12 @@ const AddTimer = ({ navigation }) => {
     <StatusBar barStyle="light-content" backgroundColor={Colors.blackPearl} />
         <View style={styles.viewTextTitle}>
             <Text style={styles.title}>Intervalo de Recuperação</Text>
+            <Text style={styles.title}>ROUTE: {JSON.stringify(minOne)}</Text>
         </View>
 
         <View style={styles.viewInput}>
             <Text style={styles.titleDescanso}>Descanso:</Text>
-            <Text style={styles.display}>00:45s</Text>
+            <Text style={styles.display}>{minOne}0:45s</Text>
 
         <View style={styles.buttonAdd} >
             <TouchableOpacity
@@ -27,7 +30,8 @@ const AddTimer = ({ navigation }) => {
             >
                 <Icon
                     name="play-arrow"
-                    size={50}
+                    //name="pause"
+                    size={40}
                     color={Colors.blueDark}
                     style={styles.buttonClose}
                 />
@@ -37,9 +41,9 @@ const AddTimer = ({ navigation }) => {
             >
                 <Icon
                     name="add"
-                    size={50}
+                    size={40}
                     color={Colors.greenDark}
-                    style={styles.buttonClose}
+                    style={styles.buttonAddSize}
                 />
             </TouchableOpacity>
             <TouchableOpacity
@@ -47,7 +51,7 @@ const AddTimer = ({ navigation }) => {
             >
                 <Icon
                     name="close"
-                    size={50}
+                    size={40}
                     color={Colors.redDark}
                     style={styles.buttonClose}
                 />
@@ -113,12 +117,14 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 26,
     fontWeight: 'bold',
+    fontFamily: 'sans-serif-thin',
   },
   buttonAddTitle: {
     margin: 10,
     color: Colors.white,
     fontSize: 26,
     fontWeight: 'bold',
+    fontFamily: 'sans-serif-thin',
   },
   buttonAdd: {
     flexDirection: 'row',
@@ -129,6 +135,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     alignSelf: 'flex-start',
     marginLeft: 70,
+    fontFamily: 'sans-serif-thin',
   },
   viewInput: {
     flex: 3,
@@ -143,6 +150,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingVertical: 15,
     paddingHorizontal: 40,
+    fontFamily: 'sans-serif-thin',
   },
   viewButtons: {
     flex: 2,
@@ -169,6 +177,9 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     marginHorizontal: 10,
+  },
+  buttonAddSize: {
+    marginHorizontal: 25,
   },
 })
 

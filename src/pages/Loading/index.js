@@ -43,7 +43,7 @@ const Main = ({ navigation }) => {
             >
                 <Image style={styles.image} source={Logo} />
             </Animated.View>
-        <Text style={styles.title} onPress={()=> navigation.navigate('AddTimer')}>Cada segundo conta</Text>
+        <Text style={styles.title} onPress={()=> navigation.navigate('AddTimer', {minOne: 0} )}>Cada segundo conta</Text>
     </SafeAreaView>
   );
 }
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.white,
+    fontFamily: 'sans-serif-thin',
     fontSize: 26,
     fontWeight: 'bold',
     alignSelf: 'center',
