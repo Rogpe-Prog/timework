@@ -6,40 +6,75 @@ import Colors from '../../styles/Colors'
 import Logo from '../../assets/logo.png'
 
 
-const SetTimer = ({navigation}) => {
-    const [oneZero, setOneZero] = useState(true)
-    const [minOne, setMinOne] = useState(0)
-    const [minTwo, setMinTwo] = useState(0)
+const SetTimer = ({ navigation }) => {
+    const [min, setMin] = useState(0)
     const [segOne, setSegOne] = useState(0)
     const [segTwo, setSegTwo] = useState(0)
-    const [disable, setDisable] = useState(false)
+
+    const [checkMin, setCheckMin] = useState(false)
+    const [checkSegOne, setCheckSegOne] = useState(false)
+    const [checkSegTwo, setCheckSegTwo] = useState(false)
+
 
 useEffect(() => {
-    setMinOne(0)
-    setMinTwo(0)
+    setMin(0)
     setSegOne(0)
     setSegTwo(0)
-    setDisable(true)
-    setOneZero(false)
+
+    setCheckMin(true)
+    setCheckSegOne(true)
+    setCheckSegTwo(true)
+
 }, [])
 
-    const disabledOneMin = () => {
-        setDisable(flase)
-    }
+    const setterNumber = (e) => {
 
-    const adjustMinOne = (e) => {
-       minOne > 1 ? setMinOne(0) : setMinOne(0)
-       setMinOne(e)
-       Alert.alert(JSON.stringify(e))
+        if(checkMin){
+            if(e > 5){
+                Alert.alert('Atenção', 'Isso é um treino mesmo!')
+            }
+            setMin(e)
+            setCheckMin(false)
+
+        } else if (checkSegOne) {
+            if (e <= 5){
+                setSegOne(e)
+                console.log(JSON.stringify(e))
+                setCheckSegOne(false)
+            } 
+            
+        } else if (checkSegTwo) {
+            setSegTwo(e)
+            console.log(JSON.stringify(e))
+            setCheckSegTwo(false)
+
+        }
+
+    
     }
 
     const zeroAll = () => {
-        setMinOne(0)
-        setMinTwo(0)
+        setMin(0)
         setSegOne(0)
         setSegTwo(0)
-        disabledOneMin()
+    
+        setCheckMin(true)
+        setCheckSegOne(true)
+        setCheckSegTwo(true)
     }
+    const resetMin = () => {
+        setMin(0)
+        setCheckMin(true)
+    }
+    const resetSegOne = () => {
+        setSegOne(0)
+        setCheckSegOne(true)
+    }
+    const resetSegTwo = () => {
+        setSegTwo(0)
+        setCheckSegTwo(true)
+    }
+    
 
   return (
     <View style={styles.container}>
@@ -47,96 +82,101 @@ useEffect(() => {
 
         <View style={styles.viewTextTitle}>
                 <Text style={styles.title}>Defina o Intervalo</Text>
+                <Text style={styles.title}>{JSON.stringify(checkMin)}</Text>
             
 
             <View style={styles.viewInput}>
-                <Text style={styles.display}>{minOne}{minTwo}m {segOne}{segTwo}s</Text>
+                <View style={styles.displayNums}>
+                    <TouchableOpacity style={styles.displayMin} onPress={resetMin}>
+                    <Text style={styles.displayText}>
+                        {min}
+                    </Text>
+                    <Text style={[styles.displayText, styles.displayTextMin]}>
+                        m
+                    </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={resetSegOne}>
+                        <Text style={[styles.displayText, styles.displayTextSeg]}>
+                            {segOne}
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.displayMin} onPress={resetSegTwo}>
+                        <Text style={styles.displayText}>
+                            {segTwo}
+                        </Text>
+                        <Text style={[styles.displayText, styles.displaySeg]}>
+                            s
+                        </Text>
+                    </TouchableOpacity>
+                </View>
 
                 <View style={styles.viewNumbers}>
                     <View>
                         <TouchableOpacity
-                            //disabled={disable}
-                            onPress={() => adjustMinOne(1)}
+                            onPress={() => setterNumber(1)}
                         >
-                            {
-                                disable && oneZero 
-                                    ? <Text style={styles.numbersDark}>0</Text> 
-                                    : <Text style={styles.numbers}>1</Text>
-                            }
-                            
+                            <Text style={styles.numbers}>1</Text> 
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            
+                            onPress={() => setterNumber(4)}
                         >
-                            <Text style={styles.numbers}>4</Text>
+                            <Text style={styles.numbers}>4</Text> 
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text style={styles.numbers}>7</Text>    
+
+                        <TouchableOpacity
+                            onPress={() => setterNumber(7)}
+                        >
+                            <Text style={styles.numbers}>7</Text> 
                         </TouchableOpacity>
                     </View>
                     <View>
                         <TouchableOpacity
-                            disabled={disable}
+                            onPress={() => setterNumber(2)}
                         >
-                            {
-                                disable ? <Text style={styles.numbersDark}>0</Text> : <Text style={styles.numbers}>2</Text>
-                            }
-                            
+                            <Text style={styles.numbers}>2</Text> 
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            disabled={disable}
+                            onPress={() => setterNumber(5)}
                         >
-                            {
-                                disable ? <Text style={styles.numbersDark}>0</Text> :  <Text style={styles.numbers}>5</Text>
-                            }
-                            
+                            <Text style={styles.numbers}>5</Text>                        
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            disabled={disable}
+                            onPress={() => setterNumber(8)}
                         >
-                            {
-                                disable ? <Text style={styles.numbersDark}>0</Text> :  <Text style={styles.numbers}>8</Text>
-                            }
-                            
-                        </TouchableOpacity>
-                       
+                            <Text style={styles.numbers}>8</Text>
+                          
+                        </TouchableOpacity> 
                     </View>
+
                     <View>
                         <TouchableOpacity
-                            disabled={disable}
+                            onPress={() => setterNumber(3)}
                         >
-                            {
-                                disable ? <Text style={styles.numbersDark}>0</Text> : <Text style={styles.numbers}>3</Text>
-                            }
-                            
+                            <Text style={styles.numbers}>3</Text> 
+
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            disabled={disable}
+                            onPress={() => setterNumber(6)}
                         >
-                            {
-                                disable ? <Text style={styles.numbersDark}>0</Text> : <Text style={styles.numbers}>6</Text>
-                            }
-                            
+
+                            <Text style={styles.numbers}>6</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            disabled={disable}
+                            onPress={() => setterNumber(9)}
                         >
-                            {
-                                disable ? <Text style={styles.numbersDark}>0</Text> : <Text style={styles.numbers}>9</Text>
-                            }
-                            
+                            <Text style={styles.numbers}>9</Text>                            
                         </TouchableOpacity>
-
                     </View>
                 </View>
+
                     <View style={styles.numberZero}>
-                        <TouchableOpacity
-                            onPress={() => adjustMinOne(0)}
+                         <TouchableOpacity
+                            onPress={() => setterNumber(0)}
                         >
                             <Text style={styles.numbers}>0</Text>
                         </TouchableOpacity>
@@ -144,7 +184,7 @@ useEffect(() => {
 
                 <View style={styles.buttons}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('AddTimer', { minOne: minOne })}
+                        onPress={() => navigation.navigate('AddTimer', { minOne: min })}
                     >
                         <Icon
                             name="play-arrow"
@@ -156,7 +196,7 @@ useEffect(() => {
 
 
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('Loading')}
+                        onPress={zeroAll}
                     >
                         <Icon
                             name="close"
@@ -168,14 +208,14 @@ useEffect(() => {
 
                 </View>    
                     
-
-                
             </View>
 
         </View>
 
         <View style={styles.viewImage}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddTimer', {minOne: 0})}>
             <Image source={Logo} />
+        </TouchableOpacity>
         </View>
 
     </View>
@@ -196,15 +236,33 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: 'sans-serif-thin',
   },
-  display: {
-    fontSize: 60,
+  displayText: {    
     color: Colors.white,
+    fontSize: 60,
+    fontFamily: 'sans-serif-thin', 
+  },
+  displayTextMin: {
+    color: Colors.redDark,
+  },
+  displaySeg: {
+    color: Colors.greenDark,
+  },
+  displayTextSeg: {
+    marginLeft: 13,
+    marginHorizontal: 2,
+  },
+  displayNums: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: 300,
+    height: 100,
+    borderRadius: 15,   
+    alignItems: 'center',
+    alignSelf: 'center',
     backgroundColor: Colors.asphalt,
-    borderRadius: 15,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    marginHorizontal: 30,
-    fontFamily: 'sans-serif-thin',
+  },
+  displayMin: {
+      flexDirection: 'row',
   },
   viewNumbers: {
     flexDirection: 'row',
@@ -216,11 +274,6 @@ const styles = StyleSheet.create({
       color: Colors.white,
       padding: 20,
       fontFamily: 'sans-serif-thin',
-  },
-  numbersDark: {
-    fontSize: 40,
-    color: Colors.blackPearl,
-    padding: 20,
   },
   numberZero: {
     alignItems: 'center',
