@@ -41,7 +41,9 @@ useEffect(() => {
                 setSegOne(e)
                 console.log(JSON.stringify(e))
                 setCheckSegOne(false)
-            } 
+            } else if (e >= 6){
+                Alert.alert('Alerta', 'Digite de 0 a 5.')
+            }
             
         } else if (checkSegTwo) {
             setSegTwo(e)
@@ -184,7 +186,7 @@ useEffect(() => {
 
                 <View style={styles.buttons}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('AddTimer', { minOne: min })}
+                        onPress={() => navigation.navigate('AddTimer', { min, segOne, segTwo })}
                     >
                         <Icon
                             name="play-arrow"
@@ -213,7 +215,7 @@ useEffect(() => {
         </View>
 
         <View style={styles.viewImage}>
-        <TouchableOpacity onPress={() => navigation.navigate('AddTimer', {minOne: 0})}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddTimer', {min: 0})}>
             <Image source={Logo} />
         </TouchableOpacity>
         </View>

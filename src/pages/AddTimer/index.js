@@ -5,11 +5,18 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import Colors from '../../styles/Colors'
 import Logo from '../../assets/logo.png'
 
-const AddTimer = ({ params, navigation }) => {
+const AddTimer = ({ navigation }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const [minTimer, setMinTimer] = useState(0)
 
-    const { minOne } = navigation.state.params
+    const { min, segOne, segTwo } = navigation.state.params
+
+    const timerMin = () => {
+      // setInterval(() => {
+      //   setMinTimer(minTimer + 1)
+      // }, 1000);
+    }
 
   return (
 
@@ -17,12 +24,37 @@ const AddTimer = ({ params, navigation }) => {
     <StatusBar barStyle="light-content" backgroundColor={Colors.blackPearl} />
         <View style={styles.viewTextTitle}>
             <Text style={styles.title}>Intervalo de Recuperação</Text>
-            <Text style={styles.title}>ROUTE: {JSON.stringify(minOne)}</Text>
+            <TouchableOpacity onPress={()=> timerMin()}>
+              <Text style={styles.title}>Timer: {minTimer}</Text>
+            </TouchableOpacity>
         </View>
 
         <View style={styles.viewInput}>
             <Text style={styles.titleDescanso}>Descanso:</Text>
-            <Text style={styles.display}>{minOne}0:45s</Text>
+
+            <View style={styles.displayNums}>
+                  <TouchableOpacity style={styles.displayMin}>
+                  <Text style={styles.displayText}>
+                      {min}
+                  </Text>
+                  <Text style={[styles.displayText, styles.displayTextMin]}>
+                      m
+                  </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                      <Text style={[styles.displayText, styles.displayTextSeg]}>
+                          {segOne}
+                      </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.displayMin}>
+                      <Text style={styles.displayText}>
+                          {segTwo}
+                      </Text>
+                      <Text style={[styles.displayText, styles.displaySeg]}>
+                          s
+                      </Text>
+                  </TouchableOpacity>
+              </View>
 
         <View style={styles.buttonAdd} >
             <TouchableOpacity
@@ -134,23 +166,13 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 18,
     alignSelf: 'flex-start',
-    marginLeft: 70,
+    marginLeft: 40,
     fontFamily: 'sans-serif-thin',
   },
   viewInput: {
     flex: 3,
     alignItems: 'center',
     marginTop: 20,
-  },
-  display: {
-    fontSize: 60,
-    borderColor: Colors.green,
-    color: Colors.white,
-    backgroundColor: Colors.asphalt,
-    borderRadius: 15,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    fontFamily: 'sans-serif-thin',
   },
   viewButtons: {
     flex: 2,
@@ -180,6 +202,32 @@ const styles = StyleSheet.create({
   },
   buttonAddSize: {
     marginHorizontal: 25,
+  },
+  displayNums: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: 300,
+    height: 100,
+    borderRadius: 15,   
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: Colors.asphalt,
+  },
+  displayMin: {
+    flexDirection: 'row',
+  },
+  displayText: {    
+    color: Colors.white,
+    fontSize: 60,
+    fontFamily: 'sans-serif-thin', 
+  },
+  displayTextMin: {
+    color: Colors.redDark,
+    marginHorizontal: 3,
+    marginRight: 8,
+  },
+  displayTextSeg: {
+    marginHorizontal: 2,
   },
 })
 
