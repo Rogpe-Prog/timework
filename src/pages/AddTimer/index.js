@@ -6,17 +6,66 @@ import Colors from '../../styles/Colors'
 import Logo from '../../assets/logo.png'
 
 const AddTimer = ({ navigation }) => {
-    const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    const [minTimer, setMinTimer] = useState(0)
-
+    const [enableAlarm, setEnableAlarm] = useState(false)
+    const [enableModal, setEnableModal] = useState(false)
+    const [play, setPlay] = useState(true)
+    
     const { min, segOne, segTwo } = navigation.state.params
+    
+    let segs = segOne.toString() + segTwo.toString()
+    let segis = parseInt(segs)
+    
+    const [mins, setMins] = useState(min)
+    const [isActiveMin, setActiveMin] = useState(false)
+    
+    const [seg, setSeg] = useState(segis)
+    const [isActiveSeg, setActiveSeg] = useState(false)
+    
+    const toggleAlert = () => setEnableAlarm(previousState => !previousState)
+    const toggleModal = () => setEnableModal(previousState => !previousState)
 
-    const timerMin = () => {
-      // setInterval(() => {
-      //   setMinTimer(minTimer + 1)
-      // }, 1000);
+    const toggleSeg = () => {
+      setActiveSeg(!isActiveSeg)
+      setActiveMin(!isActiveMin)
+      setPlay(!play)
     }
+
+    useEffect(() => {
+      let interval = null;
+      if (isActiveSeg) {
+        interval = setInterval(() => {
+          if(seg > 0){
+            setSeg(seg => seg - 1)
+          }
+          if (seg === 0){
+            if(mins === 0){
+              clearInterval(interval);
+              setPlay(!play)
+            } else {
+              setMins(mins => mins - 1)
+              setSeg(59)
+            }
+          }
+        }, 1000);
+      } else if (!isActiveSeg && seg !== 0) {
+        clearInterval(interval);
+      } 
+
+      return () => clearInterval(interval);
+    }, [isActiveSeg, seg])
+
+
+    const zeroAll = () => {
+      setMins(0)
+      setSeg(0)
+
+      setActiveMin(false)
+      setActiveSeg(false)
+      setPlay(true)
+      setIsEnabled(false)
+    }
+
+    
 
   return (
 
@@ -24,49 +73,55 @@ const AddTimer = ({ navigation }) => {
     <StatusBar barStyle="light-content" backgroundColor={Colors.blackPearl} />
         <View style={styles.viewTextTitle}>
             <Text style={styles.title}>Intervalo de Recuperação</Text>
-            <TouchableOpacity onPress={()=> timerMin()}>
-              <Text style={styles.title}>Timer: {minTimer}</Text>
-            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={toggleSeg}>
+              <Text style={styles.title}>Timer: {mins}m:{seg === 0 ? '00' : seg <= 9 ? '0'.concat(seg) : seg}s</Text>
+              <Text style={styles.title}>Segs: {JSON.stringify(play)}</Text>
+            </TouchableOpacity> */}
         </View>
 
         <View style={styles.viewInput}>
             <Text style={styles.titleDescanso}>Descanso:</Text>
 
             <View style={styles.displayNums}>
-                  <TouchableOpacity style={styles.displayMin}>
+                  <View style={styles.displayMin}>
                   <Text style={styles.displayText}>
-                      {min}
+                      {mins}
                   </Text>
                   <Text style={[styles.displayText, styles.displayTextMin]}>
                       m
                   </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                      <Text style={[styles.displayText, styles.displayTextSeg]}>
-                          {segOne}
-                      </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.displayMin}>
+                  </View>
+                  <View style={styles.displayMin}>
                       <Text style={styles.displayText}>
-                          {segTwo}
+                          {seg === 0 ? '00' : seg <= 9 ? '0'.concat(seg) : seg}
                       </Text>
                       <Text style={[styles.displayText, styles.displaySeg]}>
                           s
                       </Text>
-                  </TouchableOpacity>
+                  </View>
               </View>
 
         <View style={styles.buttonAdd} >
             <TouchableOpacity
-                onPress={() => Alert.alert('Alerta')}
+                onPress={toggleSeg}
             >
+            {
+              play
+                ? 
                 <Icon
-                    name="play-arrow"
-                    //name="pause"
+                    name="play-arrow" 
                     size={40}
                     color={Colors.blueDark}
                     style={styles.buttonClose}
                 />
+                :
+                <Icon
+                    name="pause" 
+                    size={40}
+                    color={Colors.blueDark}
+                    style={styles.buttonClose}
+                />
+            }
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => navigation.navigate('SetTimer')}
@@ -79,7 +134,7 @@ const AddTimer = ({ navigation }) => {
                 />
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => Alert.alert('Alerta')}
+                onPress={zeroAll}
             >
                 <Icon
                     name="close"
@@ -110,16 +165,16 @@ const AddTimer = ({ navigation }) => {
             <Switch
                 style={styles.switchButton}
                 trackColor={{ false: Colors.asphalt, true: Colors.asphalt }}
-                thumbColor={isEnabled ? Colors.green : Colors.white}
-                onValueChange={toggleSwitch}
-                value={isEnabled}
+                thumbColor={enableModal ? Colors.green : Colors.white}
+                onValueChange={toggleModal}
+                value={enableModal}
             />
             <Switch
                 style={styles.switchButton}
                 trackColor={{ false: Colors.asphalt, true: Colors.asphalt }}
-                thumbColor={isEnabled ? Colors.green : Colors.white}
-                onValueChange={toggleSwitch}
-                value={isEnabled}
+                thumbColor={enableAlarm ? Colors.green : Colors.white}
+                onValueChange={toggleAlert}
+                value={enableAlarm}
             />
         </View>
 

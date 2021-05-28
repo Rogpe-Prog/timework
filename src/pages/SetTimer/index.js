@@ -11,7 +11,7 @@ const SetTimer = ({ navigation }) => {
     const [segOne, setSegOne] = useState(0)
     const [segTwo, setSegTwo] = useState(0)
 
-    const [checkMin, setCheckMin] = useState(false)
+    const [checkMin, setCheckMin] = useState(false)    
     const [checkSegOne, setCheckSegOne] = useState(false)
     const [checkSegTwo, setCheckSegTwo] = useState(false)
 
@@ -39,7 +39,6 @@ useEffect(() => {
         } else if (checkSegOne) {
             if (e <= 5){
                 setSegOne(e)
-                console.log(JSON.stringify(e))
                 setCheckSegOne(false)
             } else if (e >= 6){
                 Alert.alert('Alerta', 'Digite de 0 a 5.')
@@ -47,12 +46,9 @@ useEffect(() => {
             
         } else if (checkSegTwo) {
             setSegTwo(e)
-            console.log(JSON.stringify(e))
             setCheckSegTwo(false)
-
         }
-
-    
+        
     }
 
     const zeroAll = () => {
@@ -84,7 +80,7 @@ useEffect(() => {
 
         <View style={styles.viewTextTitle}>
                 <Text style={styles.title}>Defina o Intervalo</Text>
-                <Text style={styles.title}>{JSON.stringify(checkMin)}</Text>
+                {/* <Text style={styles.title}>{JSON.stringify(checkMin)}</Text> */}
             
 
             <View style={styles.viewInput}>
@@ -215,7 +211,7 @@ useEffect(() => {
         </View>
 
         <View style={styles.viewImage}>
-        <TouchableOpacity onPress={() => navigation.navigate('AddTimer', {min: 0})}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddTimer', {min: 0, segOne: 0, segTwo: 0})}>
             <Image source={Logo} />
         </TouchableOpacity>
         </View>
@@ -234,8 +230,8 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 28,
     alignSelf: 'center',
-    marginBottom: 10,
-    marginTop: 10,
+    marginBottom: 20,
+    marginTop: 20,
     fontFamily: 'sans-serif-thin',
   },
   displayText: {    
