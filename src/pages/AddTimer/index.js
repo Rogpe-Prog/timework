@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, Switch, Vibration, Alert } from 'react-native'
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, Switch, Vibration, NativeModules } from 'react-native'
+
+import BackgroundTimer from 'react-native-background-timer'
 
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Colors from '../../styles/Colors'
@@ -36,24 +38,27 @@ const AddTimer = ({ navigation }) => {
         setActiveSeg(!isActiveSeg)
         setActiveMin(!isActiveMin)
         setPlay(!play)
+      } else {
+        console.log('00000')
+        setEnableAlarm(false)
+        setIsAlarm(false)
       }
-      console.log('00000')
     }
 
     useEffect(() => {
       let interval = null;
       if (isActiveSeg) {
-        interval = setInterval(() => {
+        interval = BackgroundTimer.setInterval(() => {
           if(seg > 0){
             setSeg(seg => seg - 1)
           }
           if (seg === 0){
             if(mins === 0){
-              clearInterval(interval);
               setPlay(!play)
               isAlarm ? Vibration.vibrate(1000) : Vibration.cancel()
               setIsAlarm(false)
               setEnableAlarm(false)
+              BackgroundTimer.clearInterval(interval);
 
             } else {
               setMins(mins => mins - 1)
@@ -62,10 +67,10 @@ const AddTimer = ({ navigation }) => {
           }
         }, 1000);
       } else if (!isActiveSeg && seg !== 0) {
-        clearInterval(interval);
+        BackgroundTimer.clearInterval(interval);
       } 
 
-      return () => clearInterval(interval);
+      return () => BackgroundTimer.clearInterval(interval);
     }, [isActiveSeg, seg])
 
 
@@ -88,7 +93,7 @@ const AddTimer = ({ navigation }) => {
     <StatusBar barStyle="light-content" backgroundColor={Colors.blackPearl} />
         <View style={styles.viewTextTitle}>
             <Text style={styles.title}>Intervalo de Recuperação</Text>
-            <TouchableOpacity onPress={toggleSeg}>
+            <TouchableOpacity onPress={(toggleSeg)}>
               <Text style={styles.title}>Timer: {mins}m:{seg === 0 ? '00' : seg <= 9 ? '0'.concat(seg) : seg}s</Text>
               <Text style={styles.title}>Segs: {JSON.stringify(isAlarm)}</Text>
             </TouchableOpacity>
