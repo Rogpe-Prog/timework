@@ -2,6 +2,7 @@
   package="br.dev.heroes.timework">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
       android:name=".MainApplication"
@@ -22,3 +23,4 @@
       </activity>
     </application>
 </manifest>
+

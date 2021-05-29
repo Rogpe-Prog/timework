@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, Switch, Alert } from 'react-native'
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, Switch, Vibration, Alert } from 'react-native'
 
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Colors from '../../styles/Colors'
@@ -7,9 +7,10 @@ import Logo from '../../assets/logo.png'
 
 const AddTimer = ({ navigation }) => {
     const [enableAlarm, setEnableAlarm] = useState(false)
+    const [isAlarm, setIsAlarm] = useState(false)
     const [enableModal, setEnableModal] = useState(false)
     const [play, setPlay] = useState(true)
-    
+
     const { min, segOne, segTwo } = navigation.state.params
     
     let segs = segOne.toString() + segTwo.toString()
@@ -21,13 +22,22 @@ const AddTimer = ({ navigation }) => {
     const [seg, setSeg] = useState(segis)
     const [isActiveSeg, setActiveSeg] = useState(false)
     
-    const toggleAlert = () => setEnableAlarm(previousState => !previousState)
-    const toggleModal = () => setEnableModal(previousState => !previousState)
+    const toggleAlert = () => {
+      setEnableAlarm(previousState => !previousState)
+      setIsAlarm(!isAlarm)
+    }
+    const toggleModal = () => {
+      setEnableModal(previousState => !previousState)
+    }
 
     const toggleSeg = () => {
-      setActiveSeg(!isActiveSeg)
-      setActiveMin(!isActiveMin)
-      setPlay(!play)
+      if(!(mins === 0 && seg === 0)){
+        
+        setActiveSeg(!isActiveSeg)
+        setActiveMin(!isActiveMin)
+        setPlay(!play)
+      }
+      console.log('00000')
     }
 
     useEffect(() => {
@@ -41,6 +51,10 @@ const AddTimer = ({ navigation }) => {
             if(mins === 0){
               clearInterval(interval);
               setPlay(!play)
+              isAlarm ? Vibration.vibrate(1000) : Vibration.cancel()
+              setIsAlarm(false)
+              setEnableAlarm(false)
+
             } else {
               setMins(mins => mins - 1)
               setSeg(59)
@@ -62,7 +76,8 @@ const AddTimer = ({ navigation }) => {
       setActiveMin(false)
       setActiveSeg(false)
       setPlay(true)
-      setIsEnabled(false)
+      setIsAlarm(false)
+      setEnableAlarm(false)
     }
 
     
@@ -73,10 +88,10 @@ const AddTimer = ({ navigation }) => {
     <StatusBar barStyle="light-content" backgroundColor={Colors.blackPearl} />
         <View style={styles.viewTextTitle}>
             <Text style={styles.title}>Intervalo de Recuperação</Text>
-            {/* <TouchableOpacity onPress={toggleSeg}>
+            <TouchableOpacity onPress={toggleSeg}>
               <Text style={styles.title}>Timer: {mins}m:{seg === 0 ? '00' : seg <= 9 ? '0'.concat(seg) : seg}s</Text>
-              <Text style={styles.title}>Segs: {JSON.stringify(play)}</Text>
-            </TouchableOpacity> */}
+              <Text style={styles.title}>Segs: {JSON.stringify(isAlarm)}</Text>
+            </TouchableOpacity>
         </View>
 
         <View style={styles.viewInput}>
